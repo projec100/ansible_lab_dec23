@@ -1,0 +1,4 @@
+---
+- hosts: web[0]
+  roles:
+    - nginx

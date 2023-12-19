@@ -1,0 +1,49 @@
+- hosts: web
+  become: True
+  tasks:
+    - name: Install apache
+      dnf:
+        name: httpd
+        state: present
+      when: ansible_os_family == "RedHat"
+      tags:
+      - install
+    
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: present
+      when: ansible_os_family == "Debian"
+      tags:
+      - install
+
+    - name: copy index.html file to apache server
+      copy:
+        src: index.html
+        dest: /var/www/html/
+      tags:
+      - deploy
+    
+    - name: start and enable apache
+      service:
+        name: httpd
+        state: started
+        enabled: True
+    
+    - name: Change default port
+      lineinfile:
+        path: /etc/httpd/httpd.conf
+        regexp: "^Listen"
+        insertafter: '^#Listen'
+        line: "Listen 80"
+      notify:
+      - restart apache
+      tags:
+      - configure
+
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: started
+

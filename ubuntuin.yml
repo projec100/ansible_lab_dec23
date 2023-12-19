@@ -1,0 +1,16 @@
+---
+- hosts: web
+  become: yes  # Run tasks with sudo
+  tasks:
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Install Git
+      yum:
+        name: git
+        state: present
+      when: ansible_os_family == "RedHat"
+

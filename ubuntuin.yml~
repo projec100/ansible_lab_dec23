@@ -1,0 +1,27 @@
+---
+- name: Install Apache HTTP Server on Ubuntu
+  hosts: 172.31.17.159
+  become: yes  # Run tasks with sudo
+
+  tasks:
+    - name: Update package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Apache HTTP Server
+      apt:
+        name: apache2
+        state: present
+
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+
+    - name: copy index.html file to apache server
+      copy:
+        src: index.html
+        dest: /var/www/html/
+      tags:
+      - deploy
+

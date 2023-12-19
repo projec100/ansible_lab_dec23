@@ -1,0 +1,13 @@
+---
+- name: install multiple packages like wget, httpd, sshd, etc
+  hosts: web[0]
+  become: yes
+  tasks:
+    - name: install packages
+      yum: name={{item}} state=latest
+      with_items:
+        - wget
+        - httpd
+    - name: check the staus of httpd
+      service: name=httpd state=started 
+...

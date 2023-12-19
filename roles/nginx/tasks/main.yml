@@ -1,0 +1,5 @@
+---
+# tasks file for nginx
+- name: welcome
+  debug:
+    msg: "Hi Rambabu, Welcome!!"

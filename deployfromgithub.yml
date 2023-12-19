@@ -1,0 +1,28 @@
+---
+- name: Pull the index.html from GitHub and deploy to Apache server
+  hosts: web[0]
+  become: True
+  tasks:
+    - name: Installing Apache server
+      dnf:
+        name: httpd
+        state: present
+
+    - name: Cloning Git repository
+      git:
+        repo: https://github.com/projec100/doctor-online.git
+        dest: /home/ec2-user/project  # Change this to the desired destination
+        version: main
+
+    - name: Copying the index.html file
+      copy:
+        src: /home/ec2-user/project/src/main/webapp/index.html
+        dest: /var/www/html/
+        remote_src: yes
+
+
+    - name: Start and enable Apache
+      service:
+        name: httpd
+        state: restarted
+

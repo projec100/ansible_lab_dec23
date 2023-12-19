@@ -1,0 +1,6 @@
+---
+- name: changing the SELinux status
+  hosts: web
+  tasks:
+    - name: checking the status
+      service: name=SELinux status=enforced
